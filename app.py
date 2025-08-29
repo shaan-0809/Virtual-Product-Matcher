@@ -17,6 +17,32 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Custom CSS for better mobile experience
+st.markdown("""
+<style>
+    /* Mobile responsiveness improvements */
+    @media (max-width: 768px) {
+        .stSelectbox > div > div {
+            font-size: 14px;
+        }
+        .stButton > button {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+        .stProgress > div {
+            margin: 0.25rem 0;
+        }
+    }
+    
+    /* Better product card styling */
+    .stContainer {
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # Initialize session state
 if 'embeddings_loaded' not in st.session_state:
     st.session_state.embeddings_loaded = False
@@ -82,54 +108,74 @@ def main():
             st.session_state.model_loaded = True
         st.success("Model loaded successfully!")
     
-    # Sidebar filters
-    st.sidebar.header("Filters")
+    # Mobile layout toggle (at the top for better UX)
+    mobile_layout = st.checkbox("📱 Mobile Layout", value=False, help="Check this for better mobile experience")
     
-    # Category filter
-    categories = sorted(products_df['category'].unique())
-    selected_categories = st.sidebar.multiselect(
-        "Categories",
-        categories,
-        default=categories
-    )
+    # Sidebar filters - mobile responsive
+    if mobile_layout:
+        st.header("🔧 Filters")
+        with st.expander("Filter Options", expanded=False):
+            filter_container = st.container()
+    else:
+        st.sidebar.header("Filters")
+        filter_container = st.sidebar
     
-    # Brand filter
-    brands = sorted(products_df['brand'].unique())
-    selected_brands = st.sidebar.multiselect(
-        "Brands",
-        brands,
-        default=brands
-    )
+    # Filters in responsive container
+    with filter_container:
+        # Category filter
+        categories = sorted(products_df['category'].unique())
+        selected_categories = st.multiselect(
+            "Categories",
+            categories,
+            default=categories
+        )
+        
+        # Brand filter
+        brands = sorted(products_df['brand'].unique())
+        selected_brands = st.multiselect(
+            "Brands",
+            brands,
+            default=brands
+        )
+        
+        # Price range filter
+        min_price = float(products_df['price'].min())
+        max_price = float(products_df['price'].max())
+        price_range = st.slider(
+            "Price Range ($)",
+            min_value=min_price,
+            max_value=max_price,
+            value=(min_price, max_price)
+        )
+        
+        # Similarity threshold
+        similarity_threshold = st.slider(
+            "Minimum Similarity (%)",
+            min_value=0,
+            max_value=100,
+            value=20
+        ) / 100.0
+        
+        # Sort options
+        sort_option = st.selectbox(
+            "Sort by",
+            ["Highest Similarity", "Price (Low to High)", "Price (High to Low)", "Name"]
+        )
     
-    # Price range filter
-    min_price = float(products_df['price'].min())
-    max_price = float(products_df['price'].max())
-    price_range = st.sidebar.slider(
-        "Price Range ($)",
-        min_value=min_price,
-        max_value=max_price,
-        value=(min_price, max_price)
-    )
     
-    # Similarity threshold
-    similarity_threshold = st.sidebar.slider(
-        "Minimum Similarity (%)",
-        min_value=0,
-        max_value=100,
-        value=20
-    ) / 100.0
+    # Main content area - responsive layout
+    if mobile_layout:
+        # Mobile: Stack vertically
+        st.subheader("📤 Upload Image")
+    else:
+        # Desktop: Side by side
+        col1, col2 = st.columns([1, 2])
     
-    # Sort options
-    sort_option = st.sidebar.selectbox(
-        "Sort by",
-        ["Highest Similarity", "Price (Low to High)", "Price (High to Low)", "Name"]
-    )
-    
-    # Main content area
-    col1, col2 = st.columns([1, 2])
-    
-    with col1:
-        st.subheader("Upload Image")
+    # Upload section
+    upload_container = st.container() if mobile_layout else col1
+    with upload_container:
+        if not mobile_layout:
+            st.subheader("Upload Image")
         
         # Image upload
         uploaded_file = st.file_uploader(
@@ -223,8 +269,10 @@ def main():
                     except Exception as e:
                         st.error(f"Error during search: {str(e)}")
     
-    with col2:
-        st.subheader("Search Results")
+    # Results section
+    results_container = st.container() if mobile_layout else col2
+    with results_container:
+        st.subheader("🔍 Search Results")
         
         if st.session_state.search_results is not None:
             results = st.session_state.search_results
@@ -251,8 +299,11 @@ def main():
             if filtered_results.empty:
                 st.info("No products match the current filters. Try adjusting your criteria.")
             else:
-                # Display results in a grid
-                cols_per_row = 3
+                # Display results in a responsive grid
+                if mobile_layout:
+                    cols_per_row = 1  # Single column on mobile
+                else:
+                    cols_per_row = 3  # Three columns on desktop
                 rows = len(filtered_results) // cols_per_row + (1 if len(filtered_results) % cols_per_row else 0)
                 
                 for row in range(rows):
