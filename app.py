@@ -143,21 +143,40 @@ def main():
         
         # Process image
         query_image = None
+        image_source = None
+        
         if uploaded_file is not None:
             query_image = Image.open(uploaded_file)
             st.session_state.query_image = query_image
-        elif image_url:
-            try:
-                response = requests.get(image_url, timeout=10)
-                response.raise_for_status()
-                query_image = Image.open(io.BytesIO(response.content))
-                st.session_state.query_image = query_image
-            except Exception as e:
-                st.error(f"Failed to load image from URL: {str(e)}")
+            image_source = "upload"
+        elif image_url.strip():
+            if not image_url.strip().startswith(('http://', 'https://')):
+                st.error("Please enter a valid URL starting with http:// or https://")
+            else:
+                try:
+                    with st.spinner("Loading image from URL..."):
+                        headers = {
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                        }
+                        response = requests.get(image_url.strip(), timeout=15, headers=headers)
+                        response.raise_for_status()
+                        
+                        # Check if the response is actually an image
+                        content_type = response.headers.get('content-type', '')
+                        if not content_type.startswith('image/'):
+                            st.error("The URL does not point to a valid image file.")
+                        else:
+                            query_image = Image.open(io.BytesIO(response.content))
+                            st.session_state.query_image = query_image
+                            image_source = "url"
+                            st.success("✓ Image loaded successfully!")
+                except Exception as e:
+                    st.error(f"Failed to load image from URL: {str(e)}")
+                    st.info("Try using a direct image URL (ending with .jpg, .png, etc.)")
         
         # Display query image
         if query_image:
-            st.image(query_image, caption="Query Image", use_column_width=True)
+            st.image(query_image, caption=f"Query Image ({'Uploaded' if image_source == 'upload' else 'From URL'})", use_container_width=True)
             
             # Search button
             if st.button("🔍 Find Similar Products", type="primary"):
@@ -231,11 +250,11 @@ def display_product_card(product):
         with st.container():
             # Display product image
             if product['imageUrl'].startswith('http'):
-                st.image(product['imageUrl'], use_column_width=True)
+                st.image(product['imageUrl'], use_container_width=True)
             else:
                 # Local image path
                 try:
-                    st.image(product['imageUrl'], use_column_width=True)
+                    st.image(product['imageUrl'], use_container_width=True)
                 except:
                     st.write("🖼️ Image not available")
             
@@ -267,10 +286,10 @@ def show_product_details(product):
     
     with col1:
         if product['imageUrl'].startswith('http'):
-            st.image(product['imageUrl'], use_column_width=True)
+            st.image(product['imageUrl'], use_container_width=True)
         else:
             try:
-                st.image(product['imageUrl'], use_column_width=True)
+                st.image(product['imageUrl'], use_container_width=True)
             except:
                 st.write("🖼️ Image not available")
     
