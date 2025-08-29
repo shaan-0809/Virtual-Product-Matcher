@@ -12,7 +12,7 @@ from utils.similarity_search import SimilaritySearch
 # Page configuration
 st.set_page_config(
     page_title="Visual Product Matcher",
-    page_icon="🔍",
+    page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -109,11 +109,11 @@ def main():
         st.success("Model loaded successfully!")
     
     # Mobile layout toggle (at the top for better UX)
-    mobile_layout = st.checkbox("📱 Mobile Layout", value=False, help="Check this for better mobile experience")
+    mobile_layout = st.checkbox("Mobile Layout", value=False, help="Check this for better mobile experience")
     
     # Sidebar filters - mobile responsive
     if mobile_layout:
-        st.header("🔧 Filters")
+        st.header("Filters")
         with st.expander("Filter Options", expanded=False):
             filter_container = st.container()
     else:
@@ -166,7 +166,7 @@ def main():
     # Main content area - responsive layout
     if mobile_layout:
         # Mobile: Stack vertically
-        st.subheader("📤 Upload Image")
+        st.subheader("Upload Image")
     else:
         # Desktop: Side by side
         col1, col2 = st.columns([1, 2])
@@ -248,7 +248,7 @@ def main():
             st.image(query_image, caption=f"Query Image ({'Uploaded' if image_source == 'upload' else 'From URL'})", use_container_width=True)
             
             # Search button
-            if st.button("🔍 Find Similar Products", type="primary"):
+            if st.button("Find Similar Products", type="primary"):
                 with st.spinner("Computing image embedding..."):
                     try:
                         # Process image and compute embedding
@@ -272,7 +272,7 @@ def main():
     # Results section
     results_container = st.container() if mobile_layout else col2
     with results_container:
-        st.subheader("🔍 Search Results")
+        st.subheader("Search Results")
         
         if st.session_state.search_results is not None:
             results = st.session_state.search_results
@@ -330,7 +330,7 @@ def display_product_card(product):
                 try:
                     st.image(product['imageUrl'], use_container_width=True)
                 except:
-                    st.write("🖼️ Image not available")
+                    st.write("Image not available")
             
             # Product details
             st.write(f"**{product['name']}**")
@@ -365,7 +365,7 @@ def show_product_details(product):
             try:
                 st.image(product['imageUrl'], use_container_width=True)
             except:
-                st.write("🖼️ Image not available")
+                st.write("Image not available")
     
     with col2:
         st.write(f"**Name:** {product['name']}")
