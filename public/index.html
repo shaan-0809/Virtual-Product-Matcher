@@ -11,14 +11,31 @@
     p { margin:0 0 16px; color:#9fb0d1; }
     code { background:#0d1322; padding:2px 6px; border-radius:6px; border:1px solid #1a2440; }
     a { color:#72a0ff; }
+    .actions { display:flex; gap:12px; margin-top:8px; }
+    .btn { display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid #29406e; background:#0f1627; color:#cfe0ff; text-decoration:none; }
+    .btn:hover { background:#13203a; }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Virtual Product Matcher</h1>
     <p>Netlify static deployment is ready.</p>
-    <p>Update your app entry here or point <code>publish</code> in <code>netlify.toml</code> to your build output.</p>
-    <p><a href="https://github.com/shaan-0809/Virtual-Product-Matcher">GitHub Repo</a></p>
+    <p>Launch the Streamlit app or view the repository.</p>
+    <div class="actions">
+      <a class="btn" id="streamlit-link" href="#" target="_blank" rel="noopener">Open App</a>
+      <a class="btn" href="https://github.com/shaan-0809/Virtual-Product-Matcher" target="_blank" rel="noopener">GitHub Repo</a>
+    </div>
+    <p style="margin-top:12px; color:#7f93b8;">Set your Streamlit URL via the <code>STREAMLIT_URL</code> environment variable.</p>
+    <script>
+      (function(){
+        var url = (typeof window !== 'undefined') ? (window.STREAMLIT_URL || (new URLSearchParams(location.search).get('app') || '')) : '';
+        if(!url){
+          url = 'https://your-streamlit-app-url.example.com';
+        }
+        var a = document.getElementById('streamlit-link');
+        a.href = url;
+      })();
+    </script>
   </div>
 </body>
 </html>
