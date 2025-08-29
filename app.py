@@ -155,24 +155,47 @@ def main():
             else:
                 try:
                     with st.spinner("Loading image from URL..."):
+                        url = image_url.strip()
+                        
+                        # Handle Google Images URLs by extracting the actual image URL
+                        if 'google.com' in url and 'imgurl=' in url:
+                            import urllib.parse
+                            parsed = urllib.parse.urlparse(url)
+                            query_params = urllib.parse.parse_qs(parsed.query)
+                            if 'imgurl' in query_params:
+                                url = query_params['imgurl'][0]
+                                st.info("Detected Google Images URL, extracting direct image link...")
+                        
                         headers = {
-                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                            'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+                            'Accept-Language': 'en-US,en;q=0.9',
+                            'Accept-Encoding': 'gzip, deflate, br',
+                            'DNT': '1',
+                            'Connection': 'keep-alive',
+                            'Upgrade-Insecure-Requests': '1',
                         }
-                        response = requests.get(image_url.strip(), timeout=15, headers=headers)
+                        
+                        response = requests.get(url, timeout=15, headers=headers, allow_redirects=True)
                         response.raise_for_status()
                         
-                        # Check if the response is actually an image
-                        content_type = response.headers.get('content-type', '')
-                        if not content_type.startswith('image/'):
-                            st.error("The URL does not point to a valid image file.")
-                        else:
+                        # Try to open the image regardless of content-type (some servers don't set it correctly)
+                        try:
+                            query_image = Image.open(io.BytesIO(response.content))
+                            # Test if it's a valid image by trying to load it
+                            query_image.verify()
+                            # Reopen since verify() closes the file
                             query_image = Image.open(io.BytesIO(response.content))
                             st.session_state.query_image = query_image
                             image_source = "url"
                             st.success("✓ Image loaded successfully!")
+                        except Exception as img_error:
+                            st.error("The URL does not contain a valid image.")
+                            st.info("Please try:\n- Right-click on an image and select 'Copy image address'\n- Use direct image URLs ending with .jpg, .png, .webp, etc.\n- Make sure the URL points directly to an image file")
+                            
                 except Exception as e:
                     st.error(f"Failed to load image from URL: {str(e)}")
-                    st.info("Try using a direct image URL (ending with .jpg, .png, etc.)")
+                    st.info("**Tips for image URLs:**\n- Right-click on any image and select 'Copy image address'\n- Use direct links to image files (.jpg, .png, .webp, etc.)\n- Avoid search result or gallery URLs")
         
         # Display query image
         if query_image:
