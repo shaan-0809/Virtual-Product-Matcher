@@ -6,3 +6,4 @@ requests>=2.32.5
 scikit-learn>=1.7.1
 streamlit>=1.49.0
 tensorflow>=2.20.0
+beautifulsoup4>=4.12.3
