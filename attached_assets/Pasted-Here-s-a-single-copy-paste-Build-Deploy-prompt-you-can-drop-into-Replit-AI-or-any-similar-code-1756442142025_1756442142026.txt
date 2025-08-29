@@ -1,0 +1,139 @@
+Here’s a single, copy-paste “Build & Deploy” prompt you can drop into Replit AI (or any similar code-gen agent). It tells it exactly what to make end-to-end—frontend, backend, dataset, embeddings, search, filters, docs, and deployment—so you get a live, hosted Visual Product Matcher with gorgeous UX in one go.
+
+
+---
+
+Replit Prompt (paste everything below)
+
+Project Title: Visual Product Matcher — Full-Stack, Deployed, Interview-Ready
+
+Goal: Build and deploy a beautiful, production-quality web app that finds visually similar products to an uploaded image or image URL. Include a seeded database of ≥50 products (with images + metadata), client-side ML embeddings for similarity search, responsive UI, loading states, error handling, filters, and clear docs. Ship it live on Replit. Timebox to 8 hours.
+
+Tech & Architecture (strict)
+
+Frontend: Next.js 14 (App Router) + TypeScript + Tailwind CSS + shadcn/ui + Framer Motion.
+
+Backend: Next.js API routes (Node/TypeScript). No separate server needed.
+
+ML: TensorFlow.js (browser) using MobileNet or EfficientNet feature embeddings (no paid keys). Compute embedding for the uploaded/query image on the client; compute and store product embeddings offline during a script step and commit data/product-embeddings.json.
+
+Data: At least 50 products with:
+
+id, name, category, price, brand, imageUrl, optional tags.
+
+Precompute and store a 1024-D or 512-D embedding vector per product in a JSON file.
+
+
+Storage: Keep product metadata in data/products.json and static product images under public/products/ (commit ~50 JPG/WEBP). Prefer small, royalty-free assets or AI-generated placeholders that clearly differ visually (color, shape, category) to make similarity meaningful.
+
+Similarity: Cosine similarity on the client between the uploaded image embedding and precomputed product embeddings. Results sorted by score.
+
+Deployment: Replit’s built-in web deployment (Next.js). Provide a working public URL.
+
+
+Must-Have Features (strict)
+
+1. Upload & URL input
+
+Drag-and-drop upload (PNG/JPG/WEBP up to ~5MB).
+
+Alternative: paste image URL.
+
+Show a thumbnail preview and basic EXIF info if available (optional).
+
+
+
+2. Search Interface
+
+Prominent, centered drop zone + URL input.
+
+On submit: compute embedding in the browser; query /api/products for embeddings; rank by cosine similarity.
+
+Results grid: Beautiful product cards with image, name, brand, price, category, similarity score (0–100 as a percentage), and “View” button (modal with larger image + metadata).
+
+Filters:
+
+Similarity score threshold (range slider).
+
+Category multi-select.
+
+Price range slider.
+
+Brand multi-select.
+
+Sort by: Highest similarity (default), Price (low→high), Price (high→low), Name.
+
+
+Pagination or infinite scroll (if >24 matches).
+
+
+
+3. Product Database (seed ≥50)
+
+At least 6–8 visually distinct categories (e.g., “Sneakers”, “Backpacks”, “Headphones”, “Sunglasses”, “Watches”, “Chairs”, “Lamps”, “Mugs”).
+
+Provide diverse colors/shapes to make visual similarity obvious.
+
+Include small images (~400–800px, optimized) under public/products/.
+
+
+
+4. States & UX quality
+
+Skeleton loaders for:
+
+Embedding model load.
+
+Image upload processing.
+
+Search results grid.
+
+
+Toasts/snackbars for errors (invalid URL, large file, model load fail).
+
+Empty states with friendly illustrations and “Try sample image” buttons.
+
+Accessible components (labels, alt text, focus rings, keyboard nav).
+
+Mobile-first responsive design.
+
+
+
+5. Docs
+
+README.md with:
+
+Setup, run, and deploy steps on Replit.
+
+200-word Approach section (brief, non-fluffy).
+
+Notes on limitations and future improvements.
+
+
+
+
+6. Deliverables
+
+Working app URL (public Replit URL).
+
+GitHub repo link (push from Replit).
+
+Ensure commit includes data/*.json and product images.
+
+
+
+
+File/Folder Structure (strict)
+
+/app
+  /(marketing)
+    page.tsx
+  /match
+    page.tsx              # Main matcher page
+    components/
+      UploadPanel.tsx
+      UrlInput.tsx
+      QueryPreview.tsx
+      Filters.tsx
+      ResultsGrid.tsx
+      ProductCard.tsx
