@@ -86,7 +86,7 @@ def initialize_components():
     return image_processor, embedding_generator, similarity_search
 
 def main():
-    st.title("🔍 Visual Product Matcher")
+    st.title("Visual Product Matcher")
     st.markdown("Find visually similar products by uploading an image or providing a URL")
     
     # Load data
