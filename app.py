@@ -196,12 +196,14 @@ def main():
             st.session_state.query_image = query_image
             image_source = "upload"
         elif image_url.strip():
-            if not image_url.strip().startswith(('http://', 'https://')):
+            # Sanitize pasted URLs (handle leading '@', spaces)
+            sanitized = image_url.strip().lstrip('@').strip()
+            if not sanitized.startswith(('http://', 'https://')):
                 st.error("Please enter a valid URL starting with http:// or https://")
             else:
                 try:
                     with st.spinner("Loading image from URL..."):
-                        url = image_url.strip()
+                        url = sanitized
                         try:
                             query_image = image_processor.load_image_from_url(url)
                             st.session_state.query_image = query_image

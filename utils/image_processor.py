@@ -102,10 +102,16 @@ class ImageProcessor:
         try:
             parsed = urlparse(url)
             qs = parse_qs(parsed.query)
-            if 'u' in qs and qs['u']:
-                return unquote(qs['u'][0])
-            if 'imgurl' in qs and qs['imgurl']:
-                return unquote(qs['imgurl'][0])
+            preferred_keys = ['u', 'imgurl', 'url', 'mediaurl', 'media', 'image']
+            for key in preferred_keys:
+                if key in qs and qs[key]:
+                    # Some trackers double-encode URLs; decode twice if needed
+                    value = qs[key][0]
+                    try:
+                        value = unquote(unquote(value))
+                    except Exception:
+                        value = unquote(value)
+                    return value
         except Exception:
             pass
         return url
@@ -116,6 +122,8 @@ class ImageProcessor:
             'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.9',
         }
+        # If URL points to an HTML page, some servers require Referer
+        headers['Referer'] = url
         resp = requests.get(url, timeout=20, headers=headers, allow_redirects=True)
         resp.raise_for_status()
         return resp.content
@@ -152,8 +160,24 @@ class ImageProcessor:
             # Try og:image from the page
             og = self._scrape_og_image(direct)
             if og:
-                content = self._fetch_image_bytes(og)
-                img = Image.open(io.BytesIO(content))
-                img.verify()
-                return Image.open(io.BytesIO(content))
+                try:
+                    content = self._fetch_image_bytes(og)
+                    img = Image.open(io.BytesIO(content))
+                    img.verify()
+                    return Image.open(io.BytesIO(content))
+                except Exception:
+                    pass
+            # As a last resort, follow redirects manually once
+            try:
+                with requests.Session() as s:
+                    s.headers.update({'User-Agent': 'Mozilla/5.0'})
+                    r = s.get(direct, timeout=15, allow_redirects=True)
+                    final = r.url
+                    if final != direct:
+                        content = self._fetch_image_bytes(final)
+                        img = Image.open(io.BytesIO(content))
+                        img.verify()
+                        return Image.open(io.BytesIO(content))
+            except Exception:
+                pass
             raise Exception("Unable to load a valid image from the provided URL")
