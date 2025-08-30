@@ -13,19 +13,19 @@ This application has been optimized for **faster loading times** and **better cr
 - **Enhanced Caching**: Product data and embeddings cached with TTL
 - **Batch Processing**: Optimized image processing for multiple images
 
-### 🌐 Cross-Platform Support
+###  Cross-Platform Support
 - **Windows**: Optimized SSL configuration and GPU detection
 - **macOS**: Metal Performance Shaders support
 - **Linux**: GPU memory management and optimization
 - **Universal Startup Scripts**: Easy deployment on any platform
 
-### 🔗 Multi-Source URL Support
+###  Multi-Source URL Support
 - **Social Media**: Instagram, Facebook, Twitter, Pinterest
 - **Search Engines**: Google Images, Bing Images
 - **E-commerce**: Amazon, eBay
 - **Direct URLs**: Any image URL with automatic fallback methods
 
-## ✨ Features
+##  Features
 
 * **Image Upload**: Drag-and-drop interface for uploading product images
 * **URL Input**: Support for external image URLs from multiple sources
@@ -36,7 +36,7 @@ This application has been optimized for **faster loading times** and **better cr
 * **Responsive Design**: Mobile-friendly interface with loading states
 * **Real-time Results**: Interactive product cards with similarity scores
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 * **Frontend**: Streamlit (Python web framework)
 * **ML/AI**: TensorFlow with MobileNetV2/EfficientNet for image embeddings
@@ -45,7 +45,7 @@ This application has been optimized for **faster loading times** and **better cr
 * **Data Management**: Pandas for data manipulation, JSON for storage
 * **Cross-Platform**: Platform-specific optimizations and SSL handling
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -69,7 +69,7 @@ This application has been optimized for **faster loading times** and **better cr
    * Save embeddings to `data/product_embeddings.json`  
    * Takes approximately 5-10 minutes depending on internet speed
 
-### 🖥️ Cross-Platform Startup
+###  Cross-Platform Startup
 
 #### Windows Users
 ```bash
@@ -101,7 +101,7 @@ python start_app.py --port 5000 --host 0.0.0.0
 * Open your browser and navigate to `http://localhost:5000`
 * Upload an image or enter an image URL to find similar products
 
-## ⚙️ Performance Configuration
+##  Performance Configuration
 
 ### Model Selection
 - **MobileNetV2**: Fastest loading, good accuracy (default)
@@ -119,7 +119,7 @@ The application automatically detects your platform and applies optimizations:
 - **macOS**: Metal GPU support, optimized memory
 - **Linux**: GPU memory management, batch processing
 
-## 🔧 Advanced Configuration
+## Advanced Configuration
 
 ### Custom URL Patterns
 Add support for new platforms by editing `config/performance.py`:
@@ -158,7 +158,7 @@ export OPENBLAS_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 ```
 
-## 📊 Performance Benchmarks
+## Performance Benchmarks
 
 | Platform | Model Loading | First Search | Subsequent Searches |
 |----------|---------------|--------------|---------------------|
@@ -171,7 +171,7 @@ export MKL_NUM_THREADS=1
 
 *Times may vary based on hardware specifications and internet connection*
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Common Issues
 
@@ -212,7 +212,7 @@ python start_app.py
 - Check GPU drivers
 - Verify CUDA installation (if using GPU)
 
-## 🔄 Updates and Maintenance
+##  Updates and Maintenance
 
 ### Regular Maintenance
 ```bash
@@ -234,7 +234,7 @@ The application includes built-in performance monitoring:
 - Memory usage tracking
 - Platform-specific optimizations
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 PythonChatbot/
@@ -258,7 +258,7 @@ PythonChatbot/
 └── README.md                       # This file
 ```
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -266,11 +266,11 @@ PythonChatbot/
 4. Test on multiple platforms
 5. Submit a pull request
 
-## 📄 License
+##  License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🆘 Support
+##  Support
 
 For issues and questions:
 1. Check the troubleshooting section
