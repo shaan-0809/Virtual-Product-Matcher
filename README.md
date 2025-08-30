@@ -14,8 +14,7 @@ This application has been optimized for **faster loading times** and **better cr
 - **Batch Processing**: Optimized image processing for multiple images
 
 ###  Cross-Platform Support
-- **Windows**: Optimized SSL configuration and GPU
-- detection
+- **Windows**: Optimized SSL configuration and GPU detection
 - **macOS**: Metal Performance Shaders support
 - **Linux**: GPU memory management and optimization
 - **Universal Startup Scripts**: Easy deployment on any platform
