@@ -7,3 +7,7 @@ scikit-learn>=1.7.1
 streamlit>=1.49.0
 tensorflow>=2.20.0
 beautifulsoup4>=4.12.3
+# Additional optimized dependencies
+tensorflow-cpu>=2.20.0  # CPU-only version for better performance
+lxml>=5.1.0  # Faster HTML parsing
+urllib3>=2.0.0  # Enhanced HTTP client

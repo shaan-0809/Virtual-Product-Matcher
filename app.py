@@ -8,6 +8,8 @@ import pandas as pd
 from utils.image_processor import ImageProcessor
 from utils.embedding_generator import EmbeddingGenerator
 from utils.similarity_search import SimilaritySearch
+import os
+import time
 
 # Page configuration
 st.set_page_config(
@@ -40,6 +42,15 @@ st.markdown("""
         padding: 1rem;
         margin-bottom: 1rem;
     }
+    
+    /* Performance indicator styling */
+    .performance-info {
+        background-color: #f0f2f6;
+        padding: 0.5rem;
+        border-radius: 4px;
+        margin: 0.5rem 0;
+        font-size: 0.8rem;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -52,6 +63,10 @@ if 'search_results' not in st.session_state:
     st.session_state.search_results = None
 if 'query_image' not in st.session_state:
     st.session_state.query_image = None
+if 'model_load_time' not in st.session_state:
+    st.session_state.model_load_time = None
+if 'cache_info' not in st.session_state:
+    st.session_state.cache_info = None
 
 # Load data and initialize components
 @st.cache_data
@@ -76,14 +91,42 @@ def load_embeddings():
         st.error("Product embeddings not found. Please run the embedding generation script first.")
         return {}
 
-# Initialize components
+# Initialize components with caching
 @st.cache_resource
 def initialize_components():
-    """Initialize image processor and embedding generator"""
-    image_processor = ImageProcessor()
-    embedding_generator = EmbeddingGenerator()
+    """Initialize image processor and embedding generator with optimized settings"""
+    # Create cache directory
+    cache_dir = './cache'
+    os.makedirs(cache_dir, exist_ok=True)
+    
+    # Initialize with optimized settings
+    image_processor = ImageProcessor(cache_dir=cache_dir)
+    embedding_generator = EmbeddingGenerator(model_type='efficientnet', cache_dir=cache_dir)
     similarity_search = SimilaritySearch()
+    
     return image_processor, embedding_generator, similarity_search
+
+def show_performance_info():
+    """Display performance information"""
+    if st.session_state.model_load_time:
+        st.markdown(f"""
+        <div class="performance-info">
+        <strong>Performance Info:</strong><br>
+        Model Load Time: {st.session_state.model_load_time:.2f}s<br>
+        Model Type: EfficientNetB0 (Optimized)<br>
+        Caching: Enabled
+        </div>
+        """, unsafe_allow_html=True)
+    
+    if st.session_state.cache_info:
+        cache_info = st.session_state.cache_info
+        st.markdown(f"""
+        <div class="performance-info">
+        <strong>Cache Info:</strong><br>
+        Cached Images: {cache_info['cached_images']}<br>
+        Cache Size: {cache_info['total_size_mb']:.2f} MB
+        </div>
+        """, unsafe_allow_html=True)
 
 def main():
     st.title("Visual Product Matcher")
@@ -101,12 +144,25 @@ def main():
     # Initialize components
     image_processor, embedding_generator, similarity_search = initialize_components()
     
-    # Load model with progress
+    # Update cache info
+    st.session_state.cache_info = image_processor.get_cache_info()
+    
+    # Load model with optimized loading and progress tracking
     if not st.session_state.model_loaded:
-        with st.spinner("Loading embedding model..."):
+        with st.spinner("Loading optimized embedding model..."):
+            start_time = time.time()
             embedding_generator.load_model()
+            load_time = time.time() - start_time
+            st.session_state.model_load_time = load_time
             st.session_state.model_loaded = True
-        st.success("Model loaded successfully!")
+        
+        # Show model info
+        model_info = embedding_generator.get_model_info()
+        st.success(f"Model loaded successfully in {load_time:.2f}s!")
+        st.info(f"Model: {model_info['model_type']} | Parameters: {model_info['parameters']:,}")
+    
+    # Show performance info
+    show_performance_info()
     
     # Mobile layout toggle (at the top for better UX)
     mobile_layout = st.checkbox("Mobile Layout", value=False, help="Check this for better mobile experience")
@@ -161,7 +217,15 @@ def main():
             "Sort by",
             ["Highest Similarity", "Price (Low to High)", "Price (High to Low)", "Name"]
         )
-    
+        
+        # Cache management
+        st.divider()
+        st.subheader("Cache Management")
+        if st.button("Clear Image Cache"):
+            image_processor.clear_cache()
+            st.session_state.cache_info = image_processor.get_cache_info()
+            st.success("Image cache cleared!")
+            st.rerun()
     
     # Main content area - responsive layout
     if mobile_layout:
@@ -187,6 +251,23 @@ def main():
         st.subheader("Or Enter Image URL")
         image_url = st.text_input("Image URL", placeholder="https://example.com/image.jpg")
         
+        # URL examples and tips
+        with st.expander("URL Tips & Examples", expanded=False):
+            st.markdown("""
+            **Supported URL Types:**
+            - Direct image URLs: `https://example.com/image.jpg`
+            - Google Images: `https://www.google.com/imgres?imgurl=...`
+            - Bing Images: `https://www.bing.com/images/search?view=detailv2&mediaurl=...`
+            - Pinterest: `https://www.pinterest.com/pin/...`
+            - Instagram: `https://www.instagram.com/p/...`
+            - Facebook: `https://www.facebook.com/photo.php?fbid=...`
+            
+            **Tips:**
+            - Right-click on any image and select "Copy image address"
+            - Use direct links to image files (.jpg, .png, .webp, etc.)
+            - The app will automatically resolve redirects and extract images from pages
+            """)
+        
         # Process image
         query_image = None
         image_source = None
@@ -202,13 +283,18 @@ def main():
                 st.error("Please enter a valid URL starting with http:// or https://")
             else:
                 try:
-                    with st.spinner("Loading image from URL..."):
+                    with st.spinner("Loading image from URL (with caching)..."):
                         url = sanitized
                         try:
-                            query_image = image_processor.load_image_from_url(url)
+                            # Use enhanced URL loading with caching
+                            query_image = image_processor.load_image_from_url(url, use_cache=True)
                             st.session_state.query_image = query_image
                             image_source = "url"
                             st.success("✓ Image loaded successfully!")
+                            
+                            # Update cache info
+                            st.session_state.cache_info = image_processor.get_cache_info()
+                            
                         except Exception as img_error:
                             st.error(f"The URL does not contain a valid image. {img_error}")
                             st.info("Please try:\n- Right-click on an image and select 'Copy image address'\n- Use direct image URLs ending with .jpg, .png, .webp, etc.\n- Some redirect/tracking links are supported (Bing/Google), otherwise paste the direct image URL")
@@ -225,6 +311,8 @@ def main():
             if st.button("Find Similar Products", type="primary"):
                 with st.spinner("Computing image embedding..."):
                     try:
+                        start_time = time.time()
+                        
                         # Process image and compute embedding
                         processed_image = image_processor.preprocess_image(query_image)
                         query_embedding = embedding_generator.generate_embedding(processed_image)
@@ -237,8 +325,9 @@ def main():
                             threshold=similarity_threshold
                         )
                         
+                        search_time = time.time() - start_time
                         st.session_state.search_results = results
-                        st.success(f"Found {len(results)} similar products!")
+                        st.success(f"Found {len(results)} similar products in {search_time:.2f}s!")
                         
                     except Exception as e:
                         st.error(f"Error during search: {str(e)}")
@@ -296,15 +385,18 @@ def display_product_card(product):
     try:
         # Create a container for the product card
         with st.container():
-            # Display product image
+            # Display product image with error handling
             if product['imageUrl'].startswith('http'):
-                st.image(product['imageUrl'], use_container_width=True)
+                try:
+                    st.image(product['imageUrl'], use_container_width=True)
+                except Exception:
+                    st.write("🖼️ Image loading...")
             else:
                 # Local image path
                 try:
                     st.image(product['imageUrl'], use_container_width=True)
                 except:
-                    st.write("Image not available")
+                    st.write("🖼️ Image not available")
             
             # Product details
             st.write(f"**{product['name']}**")
@@ -334,12 +426,15 @@ def show_product_details(product):
     
     with col1:
         if product['imageUrl'].startswith('http'):
-            st.image(product['imageUrl'], use_container_width=True)
+            try:
+                st.image(product['imageUrl'], use_container_width=True)
+            except Exception:
+                st.write("🖼️ Image loading...")
         else:
             try:
                 st.image(product['imageUrl'], use_container_width=True)
             except:
-                st.write("Image not available")
+                st.write("🖼️ Image not available")
     
     with col2:
         st.write(f"**Name:** {product['name']}")
