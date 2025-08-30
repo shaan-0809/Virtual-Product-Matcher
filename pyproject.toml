@@ -1,5 +1,5 @@
 [project]
-name = "repl-nix-workspace"
+name = "virtual-product-matcher"
 version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.11"
