@@ -2,11 +2,11 @@
 
 A powerful Streamlit-based web application that uses machine learning embeddings to find visually similar products based on uploaded images or image URLs.
 
-## 🚀 Performance Optimizations
+##  Performance Optimizations
 
 This application has been optimized for **faster loading times** and **better cross-platform compatibility**:
 
-### ⚡ Loading Time Improvements
+### .Loading Time Improvements
 - **Lazy Model Loading**: AI model loads only when needed
 - **Model Caching**: Pre-trained models are cached for instant reuse
 - **Lighter Model Options**: Choose between MobileNet (fast) and EfficientNet (accurate)
@@ -282,4 +282,4 @@ For issues and questions:
 
 **Performance Tip**: The first run will be slower due to model downloading and caching. Subsequent runs will be significantly faster!
 
-MADE BY SHAAN DUBEY 220164153015    7
+MADE BY SHAAN DUBEY 2201641530157
