@@ -1,0 +1,12 @@
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'requirements.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'utils/embedding_generator.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'utils/image_processor.py', LF will be replaced by CRLF the next time Git touches it
+README.md
+app.py
+render.yaml
+requirements.txt
+scripts/performance_monitor.py
+utils/embedding_generator.py
+utils/image_processor.py

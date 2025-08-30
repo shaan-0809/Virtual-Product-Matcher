@@ -1,0 +1,5 @@
+[33mee60ccc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m  Performance Optimization: Enhanced Model Loading & Cross-Platform URL Search
+[33m6cb6daf[m[33m ([m[1;31morigin/main[m[33m)[m fix: accept '@' prefixed URLs; double-decode redirect params; add Referer; improve fallbacks
+[33m156a1cc[m feat: support image URLs from redirect/tracking links (Bing/Google); fallback to og:image; add bs4
+[33m4c0f170[m chore: add render.yaml for Streamlit deployment on Render
+[33m8db63be[m chore: add Streamlit deploy files (requirements, Procfile) and Netlify CTA

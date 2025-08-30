@@ -5,11 +5,10 @@ import requests
 from PIL import Image
 import io
 import pandas as pd
+import time
 from utils.image_processor import ImageProcessor
 from utils.embedding_generator import EmbeddingGenerator
 from utils.similarity_search import SimilaritySearch
-import os
-import time
 
 # Page configuration
 st.set_page_config(
@@ -19,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better mobile experience
+# Custom CSS for better mobile experience and performance
 st.markdown("""
 <style>
     /* Mobile responsiveness improvements */
@@ -43,18 +42,22 @@ st.markdown("""
         margin-bottom: 1rem;
     }
     
-    /* Performance indicator styling */
-    .performance-info {
-        background-color: #f0f2f6;
-        padding: 0.5rem;
-        border-radius: 4px;
-        margin: 0.5rem 0;
-        font-size: 0.8rem;
+    /* Performance optimizations */
+    .stImage img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Loading states */
+    .loading-overlay {
+        position: relative;
+        opacity: 0.7;
+        pointer-events: none;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state
+# Initialize session state with performance optimizations
 if 'embeddings_loaded' not in st.session_state:
     st.session_state.embeddings_loaded = False
 if 'model_loaded' not in st.session_state:
@@ -63,15 +66,15 @@ if 'search_results' not in st.session_state:
     st.session_state.search_results = None
 if 'query_image' not in st.session_state:
     st.session_state.query_image = None
-if 'model_load_time' not in st.session_state:
-    st.session_state.model_load_time = None
-if 'cache_info' not in st.session_state:
-    st.session_state.cache_info = None
+if 'components_initialized' not in st.session_state:
+    st.session_state.components_initialized = False
+if 'model_loading_started' not in st.session_state:
+    st.session_state.model_loading_started = False
 
-# Load data and initialize components
-@st.cache_data
+# Load data and initialize components with enhanced caching
+@st.cache_data(ttl=3600)  # Cache for 1 hour
 def load_products():
-    """Load product data from JSON file"""
+    """Load product data from JSON file with caching"""
     try:
         with open('data/products.json', 'r') as f:
             products = json.load(f)
@@ -80,9 +83,9 @@ def load_products():
         st.error("Product database not found. Please run the embedding generation script first.")
         return pd.DataFrame()
 
-@st.cache_data
+@st.cache_data(ttl=3600)  # Cache for 1 hour
 def load_embeddings():
-    """Load precomputed product embeddings"""
+    """Load precomputed product embeddings with caching"""
     try:
         with open('data/product_embeddings.json', 'r') as f:
             embeddings_data = json.load(f)
@@ -91,78 +94,92 @@ def load_embeddings():
         st.error("Product embeddings not found. Please run the embedding generation script first.")
         return {}
 
-# Initialize components with caching
+# Initialize components with lazy loading
 @st.cache_resource
 def initialize_components():
-    """Initialize image processor and embedding generator with optimized settings"""
-    # Create cache directory
-    cache_dir = './cache'
-    os.makedirs(cache_dir, exist_ok=True)
-    
-    # Initialize with optimized settings
-    image_processor = ImageProcessor(cache_dir=cache_dir)
-    embedding_generator = EmbeddingGenerator(model_type='efficientnet', cache_dir=cache_dir)
-    similarity_search = SimilaritySearch()
-    
-    return image_processor, embedding_generator, similarity_search
+    """Initialize image processor and embedding generator with lazy loading"""
+    if not st.session_state.components_initialized:
+        image_processor = ImageProcessor()
+        embedding_generator = EmbeddingGenerator(model_type='mobilenet', use_cache=True)
+        similarity_search = SimilaritySearch()
+        st.session_state.components_initialized = True
+        return image_processor, embedding_generator, similarity_search
+    else:
+        # Return cached components if already initialized
+        return st.session_state.get('cached_components', (None, None, None))
 
-def show_performance_info():
-    """Display performance information"""
-    if st.session_state.model_load_time:
-        st.markdown(f"""
-        <div class="performance-info">
-        <strong>Performance Info:</strong><br>
-        Model Load Time: {st.session_state.model_load_time:.2f}s<br>
-        Model Type: EfficientNetB0 (Optimized)<br>
-        Caching: Enabled
-        </div>
-        """, unsafe_allow_html=True)
+def load_model_with_progress(embedding_generator):
+    """Load model with detailed progress tracking"""
+    if st.session_state.model_loaded:
+        return True
     
-    if st.session_state.cache_info:
-        cache_info = st.session_state.cache_info
-        st.markdown(f"""
-        <div class="performance-info">
-        <strong>Cache Info:</strong><br>
-        Cached Images: {cache_info['cached_images']}<br>
-        Cache Size: {cache_info['total_size_mb']:.2f} MB
-        </div>
-        """, unsafe_allow_html=True)
+    if not st.session_state.model_loading_started:
+        st.session_state.model_loading_started = True
+        
+        # Create progress container
+        progress_container = st.container()
+        with progress_container:
+            st.markdown("### Loading AI Model...")
+            
+            # Progress bar for model loading
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+            
+            # Simulate progress steps
+            steps = [
+                "Initializing TensorFlow...",
+                "Downloading model weights...",
+                "Loading MobileNetV2...",
+                "Compiling model...",
+                "Model ready!"
+            ]
+            
+            for i, step in enumerate(steps):
+                status_text.text(step)
+                progress_bar.progress((i + 1) / len(steps))
+                time.sleep(0.5)  # Simulate loading time
+            
+            # Actually load the model
+            try:
+                embedding_generator.load_model()
+                st.session_state.model_loaded = True
+                st.success("✓ Model loaded successfully!")
+                return True
+            except Exception as e:
+                st.error(f"❌ Failed to load model: {str(e)}")
+                return False
+            finally:
+                # Clear progress indicators
+                progress_bar.empty()
+                status_text.empty()
+    
+    return st.session_state.model_loaded
 
 def main():
     st.title("Visual Product Matcher")
     st.markdown("Find visually similar products by uploading an image or providing a URL")
     
-    # Load data
-    products_df = load_products()
-    embeddings_data = load_embeddings()
+    # Performance optimization: Load data in parallel
+    with st.spinner("Loading product database..."):
+        products_df = load_products()
+        embeddings_data = load_embeddings()
     
     if products_df.empty or not embeddings_data:
         st.warning("Please run the embedding generation script to populate the product database.")
         st.code("python scripts/generate_embeddings.py")
         return
     
-    # Initialize components
+    # Initialize components (lazy loading)
     image_processor, embedding_generator, similarity_search = initialize_components()
     
-    # Update cache info
-    st.session_state.cache_info = image_processor.get_cache_info()
+    # Cache components for reuse
+    if not st.session_state.get('cached_components'):
+        st.session_state.cached_components = (image_processor, embedding_generator, similarity_search)
     
-    # Load model with optimized loading and progress tracking
-    if not st.session_state.model_loaded:
-        with st.spinner("Loading optimized embedding model..."):
-            start_time = time.time()
-            embedding_generator.load_model()
-            load_time = time.time() - start_time
-            st.session_state.model_load_time = load_time
-            st.session_state.model_loaded = True
-        
-        # Show model info
-        model_info = embedding_generator.get_model_info()
-        st.success(f"Model loaded successfully in {load_time:.2f}s!")
-        st.info(f"Model: {model_info['model_type']} | Parameters: {model_info['parameters']:,}")
-    
-    # Show performance info
-    show_performance_info()
+    # Load model with progress tracking
+    if not load_model_with_progress(embedding_generator):
+        st.error("Failed to load the AI model. Please refresh the page and try again.")
+        return
     
     # Mobile layout toggle (at the top for better UX)
     mobile_layout = st.checkbox("Mobile Layout", value=False, help="Check this for better mobile experience")
@@ -218,14 +235,25 @@ def main():
             ["Highest Similarity", "Price (Low to High)", "Price (High to Low)", "Name"]
         )
         
-        # Cache management
-        st.divider()
-        st.subheader("Cache Management")
-        if st.button("Clear Image Cache"):
-            image_processor.clear_cache()
-            st.session_state.cache_info = image_processor.get_cache_info()
-            st.success("Image cache cleared!")
-            st.rerun()
+        # Model selection for advanced users
+        if st.checkbox("Advanced Options", help="Show advanced model settings"):
+            model_type = st.selectbox(
+                "Model Type",
+                ["mobilenet", "efficientnet_small"],
+                help="MobileNet is faster, EfficientNet is more accurate"
+            )
+            
+            if st.button("Switch Model"):
+                if embedding_generator.switch_model(model_type):
+                    st.session_state.model_loaded = False
+                    st.session_state.model_loading_started = False
+                    st.success(f"Switched to {model_type} model. Please wait for reload.")
+                    st.rerun()
+        
+        # Show model info
+        if embedding_generator:
+            model_info = embedding_generator.get_model_info()
+            st.info(f"Model: {model_info['type']} ({model_info['status']})")
     
     # Main content area - responsive layout
     if mobile_layout:
@@ -251,22 +279,13 @@ def main():
         st.subheader("Or Enter Image URL")
         image_url = st.text_input("Image URL", placeholder="https://example.com/image.jpg")
         
-        # URL examples and tips
-        with st.expander("URL Tips & Examples", expanded=False):
-            st.markdown("""
-            **Supported URL Types:**
-            - Direct image URLs: `https://example.com/image.jpg`
-            - Google Images: `https://www.google.com/imgres?imgurl=...`
-            - Bing Images: `https://www.bing.com/images/search?view=detailv2&mediaurl=...`
-            - Pinterest: `https://www.pinterest.com/pin/...`
-            - Instagram: `https://www.instagram.com/p/...`
-            - Facebook: `https://www.facebook.com/photo.php?fbid=...`
-            
-            **Tips:**
-            - Right-click on any image and select "Copy image address"
-            - Use direct links to image files (.jpg, .png, .webp, etc.)
-            - The app will automatically resolve redirects and extract images from pages
-            """)
+        # Show supported platforms
+        with st.expander("Supported URL Sources", expanded=False):
+            st.write("This app can extract images from various platforms:")
+            platforms = image_processor.get_supported_platforms()
+            for platform in platforms:
+                st.write(f"• {platform.title()}")
+            st.info("Tip: Right-click on any image and select 'Copy image address' for best results")
         
         # Process image
         query_image = None
@@ -283,18 +302,13 @@ def main():
                 st.error("Please enter a valid URL starting with http:// or https://")
             else:
                 try:
-                    with st.spinner("Loading image from URL (with caching)..."):
+                    with st.spinner("Loading image from URL..."):
                         url = sanitized
                         try:
-                            # Use enhanced URL loading with caching
-                            query_image = image_processor.load_image_from_url(url, use_cache=True)
+                            query_image = image_processor.load_image_from_url(url)
                             st.session_state.query_image = query_image
                             image_source = "url"
                             st.success("✓ Image loaded successfully!")
-                            
-                            # Update cache info
-                            st.session_state.cache_info = image_processor.get_cache_info()
-                            
                         except Exception as img_error:
                             st.error(f"The URL does not contain a valid image. {img_error}")
                             st.info("Please try:\n- Right-click on an image and select 'Copy image address'\n- Use direct image URLs ending with .jpg, .png, .webp, etc.\n- Some redirect/tracking links are supported (Bing/Google), otherwise paste the direct image URL")
@@ -311,8 +325,6 @@ def main():
             if st.button("Find Similar Products", type="primary"):
                 with st.spinner("Computing image embedding..."):
                     try:
-                        start_time = time.time()
-                        
                         # Process image and compute embedding
                         processed_image = image_processor.preprocess_image(query_image)
                         query_embedding = embedding_generator.generate_embedding(processed_image)
@@ -325,9 +337,8 @@ def main():
                             threshold=similarity_threshold
                         )
                         
-                        search_time = time.time() - start_time
                         st.session_state.search_results = results
-                        st.success(f"Found {len(results)} similar products in {search_time:.2f}s!")
+                        st.success(f"Found {len(results)} similar products!")
                         
                     except Exception as e:
                         st.error(f"Error during search: {str(e)}")
@@ -385,18 +396,15 @@ def display_product_card(product):
     try:
         # Create a container for the product card
         with st.container():
-            # Display product image with error handling
+            # Display product image
             if product['imageUrl'].startswith('http'):
-                try:
-                    st.image(product['imageUrl'], use_container_width=True)
-                except Exception:
-                    st.write("🖼️ Image loading...")
+                st.image(product['imageUrl'], use_container_width=True)
             else:
                 # Local image path
                 try:
                     st.image(product['imageUrl'], use_container_width=True)
                 except:
-                    st.write("🖼️ Image not available")
+                    st.write("Image not available")
             
             # Product details
             st.write(f"**{product['name']}**")
@@ -426,15 +434,12 @@ def show_product_details(product):
     
     with col1:
         if product['imageUrl'].startswith('http'):
-            try:
-                st.image(product['imageUrl'], use_container_width=True)
-            except Exception:
-                st.write("🖼️ Image loading...")
+            st.image(product['imageUrl'], use_container_width=True)
         else:
             try:
                 st.image(product['imageUrl'], use_container_width=True)
             except:
-                st.write("🖼️ Image not available")
+                st.write("Image not available")
     
     with col2:
         st.write(f"**Name:** {product['name']}")

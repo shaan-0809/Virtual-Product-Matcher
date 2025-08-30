@@ -1,32 +1,18 @@
 services:
   - type: web
-    name: visual-product-matcher
+    name: virtual-product-matcher
     env: python
-    plan: starter
-    buildCommand: |
-      pip install -r requirements.txt
-      python scripts/generate_embeddings.py
-    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.headless true --server.enableCORS false --server.enableXsrfProtection false
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11
-      - key: STREAMLIT_SERVER_PORT
-        value: $PORT
-      - key: STREAMLIT_SERVER_ADDRESS
-        value: 0.0.0.0
+        value: 3.11.9
       - key: STREAMLIT_SERVER_HEADLESS
-        value: true
-      - key: STREAMLIT_SERVER_ENABLE_CORS
-        value: false
+        value: "true"
+      - key: STREAMLIT_SERVER_ENABLECORS
+        value: "false"
       - key: STREAMLIT_SERVER_ENABLE_XSRF_PROTECTION
-        value: false
-      - key: STREAMLIT_BROWSER_GATHER_USAGE_STATS
-        value: false
-      - key: TENSORFLOW_CPP_MIN_LOG_LEVEL
-        value: 2
-      - key: TF_CPP_MIN_LOG_LEVEL
-        value: 2
-      - key: CUDA_VISIBLE_DEVICES
-        value: ""
-    healthCheckPath: /
+        value: "false"
     autoDeploy: true
