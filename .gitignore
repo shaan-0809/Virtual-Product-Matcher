@@ -1,0 +1,35 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+
+# Environments
+.env
+.env.*
+.venv/
+venv/
+env/
+
+# Packaging / build
+build/
+dist/
+pip-wheel-metadata/
+*.egg-info/
+*.egg
+
+# IDE / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Testing / coverage
+.pytest_cache/
+.coverage*
+coverage.xml
+
+# Node (in case of static assets)
+node_modules/
+
+

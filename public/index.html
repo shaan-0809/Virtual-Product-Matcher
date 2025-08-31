@@ -1,0 +1,41 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Virtual Product Matcher</title>
+  <style>
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:#0b0f19; color:#e6e8ea; display:grid; place-items:center; min-height:100vh; }
+    .card { max-width:720px; padding:32px; background:#131a2a; border:1px solid #1f2a44; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,.35); }
+    h1 { margin:0 0 12px; font-size:28px; }
+    p { margin:0 0 16px; color:#9fb0d1; }
+    code { background:#0d1322; padding:2px 6px; border-radius:6px; border:1px solid #1a2440; }
+    a { color:#72a0ff; }
+    .actions { display:flex; gap:12px; margin-top:8px; }
+    .btn { display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid #29406e; background:#0f1627; color:#cfe0ff; text-decoration:none; }
+    .btn:hover { background:#13203a; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Virtual Product Matcher</h1>
+    <p>Netlify static deployment is ready.</p>
+    <p>Launch the Streamlit app or view the repository.</p>
+    <div class="actions">
+      <a class="btn" id="streamlit-link" href="#" target="_blank" rel="noopener">Open App</a>
+      <a class="btn" href="https://github.com/shaan-0809/Virtual-Product-Matcher" target="_blank" rel="noopener">GitHub Repo</a>
+    </div>
+    <p style="margin-top:12px; color:#7f93b8;">Set your Streamlit URL via the <code>STREAMLIT_URL</code> environment variable.</p>
+    <script>
+      (function(){
+        var url = (typeof window !== 'undefined') ? (window.STREAMLIT_URL || (new URLSearchParams(location.search).get('app') || '')) : '';
+        if(!url){
+          url = 'https://your-streamlit-app-url.example.com';
+        }
+        var a = document.getElementById('streamlit-link');
+        a.href = url;
+      })();
+    </script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,502 @@
+[
+  {
+    "id": 1,
+    "name": "Classic White Sneakers",
+    "category": "Sneakers",
+    "price": 89.99,
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop",
+    "tags": ["white", "casual", "comfortable"],
+    "description": "Classic white sneakers perfect for everyday wear"
+  },
+  {
+    "id": 2,
+    "name": "Black Running Shoes",
+    "category": "Sneakers", 
+    "price": 129.99,
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop",
+    "tags": ["black", "running", "athletic"],
+    "description": "High-performance running shoes for serious athletes"
+  },
+  {
+    "id": 3,
+    "name": "Leather Travel Backpack",
+    "category": "Backpacks",
+    "price": 159.99,
+    "brand": "Samsonite",
+    "imageUrl": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop",
+    "tags": ["leather", "travel", "professional"],
+    "description": "Premium leather backpack for business travelers"
+  },
+  {
+    "id": 4,
+    "name": "Canvas School Backpack",
+    "category": "Backpacks",
+    "price": 45.99,
+    "brand": "JanSport",
+    "imageUrl": "https://images.unsplash.com/photo-1581605405669-fcdf81165afa?w=400&h=400&fit=crop",
+    "tags": ["canvas", "school", "casual"],
+    "description": "Durable canvas backpack perfect for students"
+  },
+  {
+    "id": 5,
+    "name": "Wireless Bluetooth Headphones",
+    "category": "Headphones",
+    "price": 199.99,
+    "brand": "Sony",
+    "imageUrl": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+    "tags": ["wireless", "bluetooth", "premium"],
+    "description": "High-quality wireless headphones with noise cancellation"
+  },
+  {
+    "id": 6,
+    "name": "Gaming Headset",
+    "category": "Headphones",
+    "price": 89.99,
+    "brand": "Razer",
+    "imageUrl": "https://images.unsplash.com/photo-1599669454699-248893623440?w=400&h=400&fit=crop",
+    "tags": ["gaming", "rgb", "microphone"],
+    "description": "Professional gaming headset with crystal clear audio"
+  },
+  {
+    "id": 7,
+    "name": "Aviator Sunglasses",
+    "category": "Sunglasses",
+    "price": 149.99,
+    "brand": "Ray-Ban",
+    "imageUrl": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=400&fit=crop",
+    "tags": ["aviator", "classic", "uv-protection"],
+    "description": "Classic aviator sunglasses with UV protection"
+  },
+  {
+    "id": 8,
+    "name": "Cat Eye Sunglasses",
+    "category": "Sunglasses",
+    "price": 79.99,
+    "brand": "Prada",
+    "imageUrl": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=400&fit=crop",
+    "tags": ["cat-eye", "fashion", "retro"],
+    "description": "Stylish cat eye sunglasses for fashion-forward individuals"
+  },
+  {
+    "id": 9,
+    "name": "Smart Watch",
+    "category": "Watches",
+    "price": 299.99,
+    "brand": "Apple",
+    "imageUrl": "https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=400&h=400&fit=crop",
+    "tags": ["smart", "fitness", "connectivity"],
+    "description": "Advanced smartwatch with health monitoring features"
+  },
+  {
+    "id": 10,
+    "name": "Mechanical Watch",
+    "category": "Watches",
+    "price": 599.99,
+    "brand": "Rolex",
+    "imageUrl": "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=400&h=400&fit=crop",
+    "tags": ["mechanical", "luxury", "classic"],
+    "description": "Luxury mechanical watch with precision craftsmanship"
+  },
+  {
+    "id": 11,
+    "name": "Ergonomic Office Chair",
+    "category": "Chairs",
+    "price": 249.99,
+    "brand": "Herman Miller",
+    "imageUrl": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop",
+    "tags": ["ergonomic", "office", "adjustable"],
+    "description": "Ergonomic office chair for comfortable work sessions"
+  },
+  {
+    "id": 12,
+    "name": "Vintage Leather Armchair",
+    "category": "Chairs",
+    "price": 899.99,
+    "brand": "West Elm",
+    "imageUrl": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop",
+    "tags": ["vintage", "leather", "comfortable"],
+    "description": "Vintage-style leather armchair for living rooms"
+  },
+  {
+    "id": 13,
+    "name": "Modern Table Lamp",
+    "category": "Lamps",
+    "price": 79.99,
+    "brand": "IKEA",
+    "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+    "tags": ["modern", "minimalist", "led"],
+    "description": "Modern table lamp with adjustable brightness"
+  },
+  {
+    "id": 14,
+    "name": "Industrial Floor Lamp",
+    "category": "Lamps",
+    "price": 159.99,
+    "brand": "CB2",
+    "imageUrl": "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=400&h=400&fit=crop",
+    "tags": ["industrial", "floor", "metal"],
+    "description": "Industrial-style floor lamp with metal finish"
+  },
+  {
+    "id": 15,
+    "name": "Ceramic Coffee Mug",
+    "category": "Mugs",
+    "price": 12.99,
+    "brand": "Starbucks",
+    "imageUrl": "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=400&h=400&fit=crop",
+    "tags": ["ceramic", "coffee", "branded"],
+    "description": "Classic ceramic coffee mug for daily use"
+  },
+  {
+    "id": 16,
+    "name": "Travel Tumbler",
+    "category": "Mugs",
+    "price": 24.99,
+    "brand": "Yeti",
+    "imageUrl": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=400&fit=crop",
+    "tags": ["travel", "insulated", "steel"],
+    "description": "Insulated travel tumbler for hot and cold beverages"
+  },
+  {
+    "id": 17,
+    "name": "Red Canvas Sneakers",
+    "category": "Sneakers",
+    "price": 69.99,
+    "brand": "Converse",
+    "imageUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=400&fit=crop",
+    "tags": ["red", "canvas", "retro"],
+    "description": "Classic red canvas sneakers with vintage appeal"
+  },
+  {
+    "id": 18,
+    "name": "Blue Denim Sneakers",
+    "category": "Sneakers",
+    "price": 79.99,
+    "brand": "Vans",
+    "imageUrl": "https://images.unsplash.com/photo-1595341888016-a392ef81b7de?w=400&h=400&fit=crop",
+    "tags": ["blue", "denim", "casual"],
+    "description": "Stylish blue denim sneakers for casual wear"
+  },
+  {
+    "id": 19,
+    "name": "Hiking Backpack",
+    "category": "Backpacks",
+    "price": 119.99,
+    "brand": "Patagonia",
+    "imageUrl": "https://images.unsplash.com/photo-1622260614153-03223fb72052?w=400&h=400&fit=crop",
+    "tags": ["hiking", "outdoor", "durable"],
+    "description": "Durable hiking backpack for outdoor adventures"
+  },
+  {
+    "id": 20,
+    "name": "Laptop Backpack",
+    "category": "Backpacks",
+    "price": 89.99,
+    "brand": "Targus",
+    "imageUrl": "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=400&fit=crop",
+    "tags": ["laptop", "tech", "professional"],
+    "description": "Professional laptop backpack with padded compartments"
+  },
+  {
+    "id": 21,
+    "name": "Over-Ear Headphones",
+    "category": "Headphones",
+    "price": 249.99,
+    "brand": "Bose",
+    "imageUrl": "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400&h=400&fit=crop",
+    "tags": ["over-ear", "premium", "comfort"],
+    "description": "Premium over-ear headphones with superior sound quality"
+  },
+  {
+    "id": 22,
+    "name": "Earbuds",
+    "category": "Headphones",
+    "price": 179.99,
+    "brand": "Apple",
+    "imageUrl": "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=400&h=400&fit=crop",
+    "tags": ["earbuds", "wireless", "compact"],
+    "description": "Wireless earbuds with active noise cancellation"
+  },
+  {
+    "id": 23,
+    "name": "Sport Sunglasses",
+    "category": "Sunglasses",
+    "price": 99.99,
+    "brand": "Oakley",
+    "imageUrl": "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=400&h=400&fit=crop",
+    "tags": ["sport", "performance", "durable"],
+    "description": "Performance sport sunglasses for active lifestyles"
+  },
+  {
+    "id": 24,
+    "name": "Round Sunglasses",
+    "category": "Sunglasses",
+    "price": 89.99,
+    "brand": "Persol",
+    "imageUrl": "https://images.unsplash.com/photo-1577803645773-f96470509666?w=400&h=400&fit=crop",
+    "tags": ["round", "vintage", "classic"],
+    "description": "Vintage round sunglasses with timeless style"
+  },
+  {
+    "id": 25,
+    "name": "Digital Watch",
+    "category": "Watches",
+    "price": 99.99,
+    "brand": "Casio",
+    "imageUrl": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
+    "tags": ["digital", "sporty", "water-resistant"],
+    "description": "Digital sports watch with multiple functions"
+  },
+  {
+    "id": 26,
+    "name": "Vintage Watch",
+    "category": "Watches",
+    "price": 399.99,
+    "brand": "Omega",
+    "imageUrl": "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400&h=400&fit=crop",
+    "tags": ["vintage", "analog", "elegant"],
+    "description": "Elegant vintage watch with classic design"
+  },
+  {
+    "id": 27,
+    "name": "Gaming Chair",
+    "category": "Chairs",
+    "price": 199.99,
+    "brand": "DXRacer",
+    "imageUrl": "https://images.unsplash.com/photo-1541558869434-2840d308329a?w=400&h=400&fit=crop",
+    "tags": ["gaming", "ergonomic", "colorful"],
+    "description": "Gaming chair with ergonomic design and RGB lighting"
+  },
+  {
+    "id": 28,
+    "name": "Dining Chair",
+    "category": "Chairs",
+    "price": 149.99,
+    "brand": "IKEA",
+    "imageUrl": "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=400&h=400&fit=crop",
+    "tags": ["dining", "modern", "comfortable"],
+    "description": "Modern dining chair with comfortable cushioning"
+  },
+  {
+    "id": 29,
+    "name": "Desk Lamp",
+    "category": "Lamps",
+    "price": 49.99,
+    "brand": "Philips",
+    "imageUrl": "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=400&fit=crop",
+    "tags": ["desk", "adjustable", "led"],
+    "description": "Adjustable LED desk lamp for focused lighting"
+  },
+  {
+    "id": 30,
+    "name": "Pendant Lamp",
+    "category": "Lamps",
+    "price": 129.99,
+    "brand": "West Elm",
+    "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+    "tags": ["pendant", "decorative", "modern"],
+    "description": "Modern pendant lamp for ceiling installation"
+  },
+  {
+    "id": 31,
+    "name": "Glass Coffee Mug",
+    "category": "Mugs",
+    "price": 15.99,
+    "brand": "Bodum",
+    "imageUrl": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=400&fit=crop",
+    "tags": ["glass", "clear", "elegant"],
+    "description": "Elegant glass coffee mug with double-wall design"
+  },
+  {
+    "id": 32,
+    "name": "Enamel Camping Mug",
+    "category": "Mugs",
+    "price": 18.99,
+    "brand": "Coleman",
+    "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop",
+    "tags": ["enamel", "camping", "outdoor"],
+    "description": "Durable enamel mug perfect for camping trips"
+  },
+  {
+    "id": 33,
+    "name": "High-Top Sneakers",
+    "category": "Sneakers",
+    "price": 109.99,
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=400&h=400&fit=crop",
+    "tags": ["high-top", "basketball", "retro"],
+    "description": "Classic high-top sneakers with basketball heritage"
+  },
+  {
+    "id": 34,
+    "name": "Slip-On Sneakers",
+    "category": "Sneakers",
+    "price": 59.99,
+    "brand": "Vans",
+    "imageUrl": "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=400&h=400&fit=crop",
+    "tags": ["slip-on", "casual", "comfortable"],
+    "description": "Easy slip-on sneakers for quick and comfortable wear"
+  },
+  {
+    "id": 35,
+    "name": "Messenger Bag",
+    "category": "Backpacks",
+    "price": 79.99,
+    "brand": "Timbuk2",
+    "imageUrl": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop",
+    "tags": ["messenger", "urban", "compact"],
+    "description": "Urban messenger bag for daily commuting"
+  },
+  {
+    "id": 36,
+    "name": "Rolling Suitcase",
+    "category": "Backpacks",
+    "price": 199.99,
+    "brand": "Samsonite",
+    "imageUrl": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5d?w=400&h=400&fit=crop",
+    "tags": ["rolling", "travel", "large"],
+    "description": "Large rolling suitcase for extended travel"
+  },
+  {
+    "id": 37,
+    "name": "Studio Monitor Headphones",
+    "category": "Headphones",
+    "price": 299.99,
+    "brand": "Audio-Technica",
+    "imageUrl": "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=400&fit=crop",
+    "tags": ["studio", "monitor", "professional"],
+    "description": "Professional studio monitor headphones for audio work"
+  },
+  {
+    "id": 38,
+    "name": "Noise-Cancelling Headphones",
+    "category": "Headphones",
+    "price": 349.99,
+    "brand": "Bose",
+    "imageUrl": "https://images.unsplash.com/photo-1487215078519-e21cc028cb29?w=400&h=400&fit=crop",
+    "tags": ["noise-cancelling", "travel", "premium"],
+    "description": "Premium noise-cancelling headphones for travel"
+  },
+  {
+    "id": 39,
+    "name": "Polarized Sunglasses",
+    "category": "Sunglasses",
+    "price": 119.99,
+    "brand": "Maui Jim",
+    "imageUrl": "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=400&h=400&fit=crop",
+    "tags": ["polarized", "fishing", "water-sports"],
+    "description": "Polarized sunglasses perfect for water activities"
+  },
+  {
+    "id": 40,
+    "name": "Designer Sunglasses",
+    "category": "Sunglasses",
+    "price": 299.99,
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400&h=400&fit=crop",
+    "tags": ["designer", "luxury", "fashion"],
+    "description": "Luxury designer sunglasses with premium materials"
+  },
+  {
+    "id": 41,
+    "name": "Fitness Tracker",
+    "category": "Watches",
+    "price": 149.99,
+    "brand": "Fitbit",
+    "imageUrl": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop",
+    "tags": ["fitness", "tracker", "health"],
+    "description": "Fitness tracker with heart rate monitoring"
+  },
+  {
+    "id": 42,
+    "name": "Dress Watch",
+    "category": "Watches",
+    "price": 449.99,
+    "brand": "Seiko",
+    "imageUrl": "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?w=400&h=400&fit=crop",
+    "tags": ["dress", "formal", "elegant"],
+    "description": "Elegant dress watch for formal occasions"
+  },
+  {
+    "id": 43,
+    "name": "Bar Stool",
+    "category": "Chairs",
+    "price": 89.99,
+    "brand": "CB2",
+    "imageUrl": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop",
+    "tags": ["bar", "stool", "modern"],
+    "description": "Modern bar stool for kitchen counters"
+  },
+  {
+    "id": 44,
+    "name": "Lounge Chair",
+    "category": "Chairs",
+    "price": 699.99,
+    "brand": "Eames",
+    "imageUrl": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop",
+    "tags": ["lounge", "designer", "comfortable"],
+    "description": "Designer lounge chair for relaxation"
+  },
+  {
+    "id": 45,
+    "name": "Reading Lamp",
+    "category": "Lamps",
+    "price": 69.99,
+    "brand": "IKEA",
+    "imageUrl": "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=400&h=400&fit=crop",
+    "tags": ["reading", "adjustable", "focused"],
+    "description": "Adjustable reading lamp with focused light beam"
+  },
+  {
+    "id": 46,
+    "name": "Chandelier",
+    "category": "Lamps",
+    "price": 399.99,
+    "brand": "Pottery Barn",
+    "imageUrl": "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=400&h=400&fit=crop",
+    "tags": ["chandelier", "elegant", "dining"],
+    "description": "Elegant chandelier for dining rooms"
+  },
+  {
+    "id": 47,
+    "name": "Thermal Mug",
+    "category": "Mugs",
+    "price": 29.99,
+    "brand": "Contigo",
+    "imageUrl": "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=400&h=400&fit=crop",
+    "tags": ["thermal", "spillproof", "commute"],
+    "description": "Spillproof thermal mug for commuting"
+  },
+  {
+    "id": 48,
+    "name": "Artisan Mug",
+    "category": "Mugs",
+    "price": 34.99,
+    "brand": "Handmade",
+    "imageUrl": "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400&h=400&fit=crop",
+    "tags": ["artisan", "handmade", "unique"],
+    "description": "Handcrafted artisan mug with unique design"
+  },
+  {
+    "id": 49,
+    "name": "Retro Running Shoes",
+    "category": "Sneakers",
+    "price": 94.99,
+    "brand": "New Balance",
+    "imageUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400&h=400&fit=crop",
+    "tags": ["retro", "running", "comfort"],
+    "description": "Retro-style running shoes with modern comfort"
+  },
+  {
+    "id": 50,
+    "name": "Skateboard Shoes",
+    "category": "Sneakers",
+    "price": 74.99,
+    "brand": "Vans",
+    "imageUrl": "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=400&h=400&fit=crop",
+    "tags": ["skateboard", "durable", "grip"],
+    "description": "Durable skateboard shoes with excellent grip"
+  }
+]
